@@ -16,7 +16,16 @@ const userSchema = mongoose.Schema({
     }
 });
 
+userSchema.post('save', function (doc, next) {
+    console.log("new user was created");
+})
 
+//fire a fucntion before document saved
+userSchema.pre('save', function (next) {
+    console.log("user about to be created", this);
+    next();
+})
+//we are using a normal function, and not an arrow because we want to use the this keyword to refer to the instance of the user we are trying to create, we dont get _v in this, because we only get this after db creates that user.
 const User = mongoose.model('user', userSchema);
 
 module.exports = User;
