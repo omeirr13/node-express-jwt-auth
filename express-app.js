@@ -1,7 +1,7 @@
 const express = require('express');
 const authRoutes = require("./routes/authRoutes");
 const cookieParser = require("cookie-parser");
-const requireAuth = require("./middleware/authMiddleware");
+const { requireAuth, checkUser } = require("./middleware/authMiddleware");
 
 module.exports = async (app) => {
     app.use(express.static('public'));//this is so we can serve static files via css to the browser
@@ -10,6 +10,8 @@ module.exports = async (app) => {
     app.set('view engine', 'ejs');
 
     //routes
+    app.get('*', checkUser);//middleware to inject user data if logged in
+
     app.get('/', requireAuth, (req, res) => res.render("home"))
     app.get('/smoothies', requireAuth, (req, res) => res.render("smoothies"))
 
@@ -20,7 +22,7 @@ module.exports = async (app) => {
     app.get('/set-cookies', (req, res) => {
         // res.setHeader('Set-Cookie', 'newUser=true');
         res.cookie('newUser', false);
-        res.cookie('isEmployee', true, { maxAge: 1000 * 60 * 60 * 24, secure: true, httpOnly: true });    
+        res.cookie('isEmployee', true, { maxAge: 1000 * 60 * 60 * 24, secure: true, httpOnly: true });
         res.send('<h1>you got the cookies</h1>');
     })
 
