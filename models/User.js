@@ -31,6 +31,18 @@ userSchema.pre('save', async function (next) {
     next();
 })
 
+//static method to login user
+userSchema.statics.login = async function (email, password) {
+    const user = await this.findOne({ email });
+    if(!user){
+        throw Error("incorrect email");
+    }
+    const isMatch = await bcrypt.compare(password, user.password);
+    if(!isMatch) {
+        throw Error("incorrect password");
+    } 
+    return user;
+}
 //we are using a normal function, and not an arrow because we want to use the this keyword to refer to the instance of the user we are trying to create, we dont get _v in this, because we only get this after db creates that user.
 
 
