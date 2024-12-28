@@ -70,8 +70,8 @@ JWT-AUTH/
 
 1. **Clone the Repository**
     ```bash
-    git clone https://github.com/your-repo/node-auth-app.git
-    cd node-auth-app
+    https://github.com/omeirr13/node-express-jwt-auth.git
+    cd node-express-jwt-auth
     npm install
     ```
 
